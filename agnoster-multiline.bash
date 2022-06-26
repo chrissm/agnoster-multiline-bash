@@ -304,6 +304,12 @@ prompt_dir() {
     prompt_segment blue black '\w'
 }
 
+prompt_time() {
+    THEME_CLOCK_COLOR=${THEME_CLOCK_COLOR:-"$_omb_prompt_bold_teal"}
+    PR=$PR$(clock_prompt)     
+}
+
+
 # Status:
 # - was there an error
 # - am I root
@@ -439,6 +445,7 @@ build_prompt() {
     [[ ! -z ${AG_EMACS_DIR+x} ]] && prompt_emacsdir
     prompt_status
     #[[ -z ${AG_NO_HIST+x} ]] && prompt_histdt
+    prompt_time
     [[ -z ${AG_NO_CONTEXT+x} ]] && prompt_context
     prompt_virtualenv
     prompt_dir
@@ -459,10 +466,10 @@ set_bash_prompt() {
     CURRENT_BG=NONE
     PR="$(ansi_single $(text_effect reset))"
     build_prompt
-
+    
     # uncomment below to use right prompt
     #     PS1='\[$(tput sc; printf "%*s" $COLUMNS "$PRIGHT"; tput rc)\]'$PR
-    PS1=$PR
+    PS1=$PR'\n'$SEGMENT_SEPARATOR
 }
 
 PROMPT_COMMAND=set_bash_prompt
